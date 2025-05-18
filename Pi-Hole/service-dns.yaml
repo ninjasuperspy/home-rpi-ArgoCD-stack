@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  pihole-dns
+  namespace: argocd
+spec:
+  type: LoadBalancer
+  selector:
+    app: pihole-app
+  ports:
+    - protocol: UDP
+      port: 53
+      targetPort: 53
