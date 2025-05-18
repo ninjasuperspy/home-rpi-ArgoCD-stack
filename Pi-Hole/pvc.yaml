@@ -11,4 +11,4 @@ spec:
   storageClassName: longhorn
   resources:
     requests:
-      storage: 20Mi
+      storage: 5Gi
