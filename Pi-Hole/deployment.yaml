@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pihole # Name of the deployment
+  name: pihole-app # Name of the deployment
   namespace: pihole # Name of the namespace
 spec:
   selector:
     matchLabels:
       app: pihole-app # Name of your application
-  replicas: 3 # Number of replicas
+  replicas: 1 # Number of replicas
   template:
     metadata:
       labels:
@@ -20,7 +20,7 @@ spec:
           image: samuel19982/securepihole # The image you want to run
           env:
             - name: TZ
-              value: 'Europe/Berlin'
+              value: 'America/NewYork'
             - name: WEBPASSWORD
               value: 'changeme'
             - name: PIHOLE_DNS_
@@ -67,84 +67,3 @@ spec:
     - protocol: UDP
       port: 53
       targetPort: 53
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: pihole
-  namespace: pihole
-spec:
-  type: ClusterIP
-  selector:
-    app: pihole-app
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: pihole-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/affinity: "cookie"
-    nginx.ingress.kubernetes.io/session-cookie-name: "pihole-cookie"
-    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
-    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/affinity-mode: persistent
-    nginx.ingress.kubernetes.io/session-cookie-hash: sha1
-spec:
-  ingressClassName: public
-  rules:
-    - host: pi.hole
-      http:
-        paths:
-          - path: /admin
-            pathType: Prefix
-            backend:
-              service:
-                name: pihole
-                port:
-                  number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: pihole-ingress-2
-  annotations:
-    nginx.ingress.kubernetes.io/app-root: /admin
-    nginx.ingress.kubernetes.io/affinity: "cookie"
-    nginx.ingress.kubernetes.io/session-cookie-name: "pihole-cookie"
-    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
-    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/affinity-mode: persistent
-    nginx.ingress.kubernetes.io/session-cookie-hash: sha1
-spec:
-  ingressClassName: public
-  rules:
-    - host: pihole.cluster.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: pihole
-                port:
-                  number: 80
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc0
-  namespace: pihole
-  labels:
-    app: pihole
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 20Mi

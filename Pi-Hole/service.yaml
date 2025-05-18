@@ -7,8 +7,8 @@ spec:
     app: pihole-app
   type: LoadBalancer
   ports:
-    - name: pi-hole
+    - name: pi-hole.cluster.local
       protocol: TCP
       port: 80
       targetPort: 80
-  loadBalancerIP: 192.168.0.210
+  loadBalancerIP: 192.168.253.210
