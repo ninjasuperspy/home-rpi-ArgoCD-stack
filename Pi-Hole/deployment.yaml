@@ -1,13 +1,16 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pihole-app # Name of the deployment
   namespace: pihole # Name of the namespace
 spec:
+  replicas: 1 # Number of replicas
   selector:
     matchLabels:
       app: pihole-app # Name of your application
-  replicas: 1 # Number of replicas
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -17,7 +20,7 @@ spec:
         # Containers are the individual pieces of your application that you want
         # to run.
         - name: pihole # Name of the container
-          image: samuel19982/securepihole # The image you want to run
+          image: pihole/pihole:latest # The image you want to run
           env:
             - name: TZ
               value: 'America/NewYork'
