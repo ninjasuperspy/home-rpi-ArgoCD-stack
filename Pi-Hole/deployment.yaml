@@ -46,12 +46,12 @@ spec:
           volumeMounts:
             - mountPath: /etc/pihole
               subPath: custom.list
-              name: pihole-local
+              name: lv-storage
       volumes:
         # Volumes are the persistent storage that your application uses.
-        - name: pihole-local # Name of the volume
+        - name: lv-storage # Name of the volume
           persistentVolumeClaim:
-            claimName: pvc0 # Name of the persistent volume claim
+            claimName: pihole-pvc # Name of the persistent volume claim
         # Volumes are the persistent storage that your application uses.
 ---
 apiVersion: v1
@@ -124,7 +124,7 @@ metadata:
 spec:
   ingressClassName: public
   rules:
-    - host: pihole.local
+    - host: pihole.cluster.local
       http:
         paths:
           - path: /
