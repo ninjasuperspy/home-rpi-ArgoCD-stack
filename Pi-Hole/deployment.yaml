@@ -21,10 +21,10 @@ spec:
         # to run.
         - name: pihole # Name of the container
           image: pihole/pihole:latest # The image you want to run
-          env:
+          environment:
             - name: TZ
               value: 'America/NewYork'
-            - name: WEBPASSWORD
+            - name: FTLCONF_webserver_api_password
               value: 'changeme'
             - name: PIHOLE_DNS_
               value: '1.1.1.1;8.8.8.8;8.8.4.4'
