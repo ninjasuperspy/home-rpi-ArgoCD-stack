@@ -20,7 +20,7 @@ spec:
         # Containers are the individual pieces of your application that you want
         # to run.
         - name: homebridge # Name of the container
-          image: oznu/homebridge:latest # The image you want to run
+          image: homebridge/homebridge:latest # The image you want to run
           env:
             - name: TZ
               value: 'America/NewYork'
