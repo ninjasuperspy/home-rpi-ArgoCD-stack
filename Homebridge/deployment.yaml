@@ -34,16 +34,6 @@ spec:
           volumeMounts:
             - mountPath: ./homebridge:/homebridge
               name: lv-storage
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8010
-            initialDelaySeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8010
-            initialDelaySeconds: 10
       volumes:
         # Volumes are the persistent storage that your application uses.
         - name: lv-storage # Name of the volume
