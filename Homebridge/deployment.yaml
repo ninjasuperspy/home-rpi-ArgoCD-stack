@@ -20,8 +20,12 @@ spec:
         # Containers are the individual pieces of your application that you want
         # to run.
         - name: homebridge # Name of the container
-          image: oznu/homebridge:latest # The image you want to run
+          image: homebridge/homebridge:latest # The image you want to run
           env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
             - name: TZ
               value: 'America/NewYork'
           ports:
@@ -30,6 +34,16 @@ spec:
           volumeMounts:
             - mountPath: ./homebridge:/homebridge
               name: lv-storage
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8010
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8010
+            initialDelaySeconds: 10
       volumes:
         # Volumes are the persistent storage that your application uses.
         - name: lv-storage # Name of the volume
