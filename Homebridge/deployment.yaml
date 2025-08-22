@@ -40,3 +40,4 @@ spec:
           persistentVolumeClaim:
             claimName: homebridge-pvc # Name of the persistent volume claim
         # Volumes are the persistent storage that your application uses.
+      hostNetwork: true
