@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homebridge-app # Name of the deployment
+  namespace: argocd # Name of the namespace
+spec:
+  replicas: 1 # Number of replicas
+  selector:
+    matchLabels:
+      app: homebridge-app # Name of your application
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: homebridge-app # Name of your application
+    spec:
+      containers:
+        # Containers are the individual pieces of your application that you want
+        # to run.
+        - name: homebridge # Name of the container
+          image: oznu/homebridge:latest # The image you want to run
+          env:
+            - name: TZ
+              value: 'America/NewYork'
+          ports:
+            # Ports are the ports that your application uses.
+            - containerPort: 8581 # The port that your application uses
+          volumeMounts:
+            - mountPath: ./homebridge:/homebridge
+              name: lv-storage
+      volumes:
+        # Volumes are the persistent storage that your application uses.
+        - name: lv-storage # Name of the volume
+          persistentVolumeClaim:
+            claimName: homebridge-pvc # Name of the persistent volume claim
+        # Volumes are the persistent storage that your application uses.
