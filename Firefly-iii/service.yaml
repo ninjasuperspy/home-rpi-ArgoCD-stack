@@ -7,7 +7,10 @@ metadata:
     app: firefly-iii
 spec:
   ports:
-    - port: 8080
+    - name: firefly-iii
+      protocol: TCP
+      port: 80
+      targetPort: 8080
   selector:
     app: firefly-iii
     tier: frontend
