@@ -1,0 +1,13 @@
+resources:
+  - deployment.yaml
+  - service.yaml
+  - pvc.yaml
+  - mysql.yaml
+  - firefly-iii-importer.yaml
+secretGenerator:
+- name: firefly-iii-secrets
+  literals:
+  - db_password=[~m,5(AaXylXv2v;p3E_6Vn2j7:8d669
+  - app_key='@9oR~npzA5{@]]8|37DwFc8`WdlEW`J
+  - access_token=w1a6>|6?3zL$98Q-%8ZeeM18sRMcO`r4
+  - static_cron_token=nE19nHN%7sS#
